@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class ReadProperties {
-    private static String PROPERTIES_PATH="texera.properties";
+    private static String PROPERTIES_PATH="dataflow/Type.properties";
     private String dbname;
 
     public String getDbName(){

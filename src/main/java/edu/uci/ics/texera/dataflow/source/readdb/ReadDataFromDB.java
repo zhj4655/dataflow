@@ -37,7 +37,7 @@ public class ReadDataFromDB {
         if(dbname.equals("elasticsearch")){
             readDataFromES(predicate);  //, resultJsonArray, ATERIX_SOURCE_SCHEMA
         }else if(dbname.equals("mysql")){
-            readDataFromMysql(predicate, resultJsonArray, ATERIX_SOURCE_SCHEMA);
+            readDataFromMysql(predicate);
         }else{
 
         }
@@ -78,7 +78,7 @@ public class ReadDataFromDB {
         }
     }
 
-    private void readDataFromMysql(AsterixSourcePredicate predicate, JSONArray resultJsonArray, Schema ATERIX_SOURCE_SCHEMA){
+    private void readDataFromMysql(AsterixSourcePredicate predicate){
 
     }
 
