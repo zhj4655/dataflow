@@ -54,41 +54,6 @@ public class AsterixSource implements ISourceOperator {
         cursor = OPENED;
     }
 
-    private static String generateAsterixQuery(AsterixSourcePredicate predicate) {
-        String asDataset = "ds";
-        StringBuilder sb = new StringBuilder();
-        sb.append("use " + predicate.getDataverse() + ';').append("\n");
-        sb.append("select * ").append("\n");
-        sb.append("from " + predicate.getDataset() + " as " + asDataset).append("\n");
-        sb.append("where true").append("\n");
-        if (predicate.getField() != null && predicate.getKeyword() != null) {
-            List<String> keywordList = DataflowUtils.tokenizeQuery(
-                    LuceneAnalyzerConstants.standardAnalyzerString(), predicate.getKeyword());
-            String asterixKeyword =
-                    "[" +
-                            keywordList.stream().map(keyword -> "\"" + keyword + "\"")
-                                    .collect(Collectors.joining(", ")) +
-                            "]";
-            String asterixField = "`" + predicate.getField() + "`";
-            sb.append("and ftcontains(" + asDataset + "." + asterixField + ", ");
-            sb.append(asterixKeyword + ", " + "{\"mode\":\"all\"}" + ")").append("\n");
-        }
-        if(predicate.getStartDate() != null){
-            String startDate = predicate.getStartDate();
-            sb.append("and create_at >= datetime(\""+startDate +"T00:00:04.000Z\")").append("\n");
-        }
-        if(predicate.getEndDate() != null){
-            String endDate = predicate.getEndDate();
-
-            sb.append("and create_at <= datetime(\""+endDate +"T00:00:04.000Z\")").append("\n");
-        }
-        if (predicate.getLimit() != null) {
-            sb.append("limit " + predicate.getLimit()).append("\n");
-        }
-        sb.append(";");
-        return sb.toString();
-    }
-
     @Override
     public Tuple getNextTuple() throws TexeraException {
         if (cursor == CLOSED) {
